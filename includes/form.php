@@ -7,7 +7,7 @@
 		<label><input type="checkbox" name="is-regexp"> Expression régulière </label>
 	</div>
 	<div class="checkbox">
-		<label><input type="checkbox" name="words"> Correspond a un mot </label>
+		<label><input type="checkbox" name="words"> Correspond à un mot </label>
 	</div>
 	<button type="submit" class="btn btn-primary">Rechercher</button>
 </form>

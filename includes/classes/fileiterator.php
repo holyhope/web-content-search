@@ -104,10 +104,14 @@ class FileIterator implements Iterator {
 		return rewind( $this->files );
 	}
 
+	protected function is_valid( $path ) {
+		return is_file( $path );
+	}
+
 	/**
 	 * Add files to FileList::$files.
 	 */
-	private function update_files() {
+	protected function update_files() {
 		static $content = '';
 
 		$added    = 0;
@@ -135,13 +139,19 @@ class FileIterator implements Iterator {
 						$content = array_pop( $values );
 
 						foreach ( $values as $value ) {
-							$newfiles[] = $this->path . DIRECTORY_SEPARATOR . $value;
-							$added++;
+							$path = $this->path . DIRECTORY_SEPARATOR . $value;
+							if ( $this->is_valid( $path ) ) {
+								$newfiles[] = $path;
+								$added++;
+							}
 						}
 					}
 					if ( $last ) {
-						$newfiles[] = $this->path . DIRECTORY_SEPARATOR . $content;
-						$content    = '';
+						$path = $this->path . DIRECTORY_SEPARATOR . $content;
+						if ( $this->is_valid( $path ) ) {
+							$newfiles[] = $path;
+							$content    = '';
+						}
 					}
 				}
 			}

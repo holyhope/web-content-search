@@ -3,6 +3,10 @@
 define( 'MAX_FILE',     -1 );
 define( 'ROOT_SEARCH',  '/home/test' );
 define( 'PROJECT_NAME', 'WebSearch' );
+define( 'SHOW_USER', true );
+define( 'SHOW_DATE', true );
+define( 'SHOW_SIZE', true );
+define( 'SHOW_TYPE', true );
 
 // Web site constants
 @include_once '../config.php';
