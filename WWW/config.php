@@ -1,6 +1,6 @@
 <?php
 // Specific constants
-define( 'MAX_FILE',     -1 );
+define( 'MAX_FILE',     100 );
 define( 'ROOT_SEARCH',  '/home/test' );
 define( 'PROJECT_NAME', 'WebSearch' );
 define( 'SHOW_USER', true );

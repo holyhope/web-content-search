@@ -6,9 +6,7 @@ if ( empty( $_POST['search'] ) ) {
 
 require_once 'config.php';
 require_once INCLUDE_DIR . DIRECTORY_SEPARATOR . 'head.php';
-?>
-<script src="<?php echo STATIC_URL . '/search.js'; ?>"></script>
-<?php
+
 
 /**
  * Converts bytes into human readable file size.
@@ -45,64 +43,9 @@ $search = $_POST['search'];
 </h1><?php
 require_once INCLUDE_DIR . DIRECTORY_SEPARATOR . 'menu.php';
 
+global $files;
 $files = new FileIterator( ROOT_SEARCH, $search, ! empty( $_POST['words'] ), ! empty( $_POST['is-regexp'] ) );
-$total = 0;
-$finfo = finfo_open( FILEINFO_MIME_TYPE );
-?><div class="list-group"><?php
-while ( false !== ( $file = $files->next() ) ) {
-	$date     = filectime( $file );
-	$filetype = finfo_file( $finfo, $file );
-	?><div class="list-group-item .col-lg-6" data-date="<?php echo htmlspecialchars( $date ); ?>">
-		<div class="media">
-			<div class="media-left media-middle">
-				<img
-					src="<?php echo STATIC_URL . DIRECTORY_SEPARATOR . 'mimetypes' . DIRECTORY_SEPARATOR . urlencode( substr( $filetype, 0, strpos( $filetype, '/' ) ) ); ?>.png"
-					class="media-object" alt="<?php echo $filetype; ?>">
-			</div>
-			<div class="media-body">
-				<h4 class="media-heading">
-					<?php echo htmlspecialchars( basename( $file ) ); ?>
-				</h4>
-				<p>
-					<?php if ( defined( 'SHOW_TYPE' ) && SHOW_TYPE ) { ?>
-						<span class="label label-info"><?php echo htmlspecialchars( $filetype ); ?></span>
-					<?php } ?>
-					<?php if ( defined( 'SHOW_USER' ) && SHOW_USER ) { ?>
-						<span class="label label-info"><?php echo htmlspecialchars( posix_getpwuid( fileowner( $file ) )['name'] ); ?></span>
-					<?php } ?>
-					<?php if ( defined( 'SHOW_SIZE' ) && SHOW_SIZE ) { ?>
-						<span class="label label-info"><?php echo htmlspecialchars( bytesConvert( filesize( $file ) ) ); ?></span>
-					<?php } ?>
-					<?php if ( defined( 'SHOW_DATE' ) && SHOW_DATE ) { ?>
-						<span class="label label-info"><?php echo htmlspecialchars( date( 'F d Y H:i:s.', $date ) ); ?></span>
-					<?php } ?>
-				</p>
-				<p>
-					<a class="btn btn-primary"
-						href="view.php?path=<?php echo urlencode( $file ); ?>"
-						attr="<?php echo $file; ?>">
-						<span class="glyphicon glyphicon-download"></span>
-						Télécharger
-						<span class="glyphicon glyphicon-download"></span>
-					</a>
-				</p>
-			</div>
-		</div>
-	</div><?php
-	if ( $total++ == MAX_FILE ) {
-		break;
-	}
-}
-?></div><?php
-if ( ! $total ) {
-	?>
-<p>Aucun fichier trouvé.</p>
-<?php
-	$opts = 'RHnil';
 
-	if ( ! empty( $_POST['words'] ) ) {
-		$opts .= 'w';
-	}
-}
+require_once INCLUDE_DIR . DIRECTORY_SEPARATOR . 'result-search.php';
 
 require_once INCLUDE_DIR . DIRECTORY_SEPARATOR . 'foot.php';
